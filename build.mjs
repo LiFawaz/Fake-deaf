@@ -48,6 +48,43 @@ const plugins = [
     esbuild({ minify: true }),
 ];
 
+
+const sitePage = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<title>Fake-deaf · Install in Revenge</title>
+<style>
+:root{color-scheme:light;--ink:#18181b;--muted:#71717a;--line:#e4e4e7;--accent:#5865f2}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:#fff;color:var(--ink);font:16px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{width:min(100%,560px);text-align:center}
+.icon{width:88px;height:88px;display:grid;place-items:center;margin:0 auto 24px;border:1px solid var(--line);border-radius:26px;background:#f8f8fb;font-size:42px}
+h1{font-size:clamp(30px,7vw,44px);line-height:1.1;letter-spacing:-.04em;margin:0 0 14px}
+p{color:var(--muted);margin:0 auto 22px;max-width:430px}
+.url{padding:15px 16px;border:1px solid var(--line);border-radius:14px;background:#fafafa;overflow-wrap:anywhere;font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;text-align:left}
+button{margin-top:12px;width:100%;padding:13px 18px;border:0;border-radius:12px;background:var(--accent);color:white;font:600 15px system-ui;cursor:pointer}
+.note{font-size:13px;margin-top:20px}
+</style>
+</head>
+<body>
+<main>
+<div class="icon" aria-hidden="true">🎧</div>
+<h1>Put this into Revenge</h1>
+<p>Fake-deaf is a Revenge plugin, not a web app. Copy the plugin URL below and paste it into Revenge’s Plugins page using Install from URL.</p>
+<div class="url" id="plugin-url">https://raw.githubusercontent.com/LiFawaz/Fake-deaf/main/dist/fake-deafen/</div>
+<button id="copy" type="button">Copy plugin URL</button>
+<p class="note" id="status">If install from URL rejects this folder URL, use the manifest URL instead.</p>
+<div class="url" style="margin-top:8px">https://raw.githubusercontent.com/LiFawaz/Fake-deaf/main/dist/fake-deafen/manifest.json</div>
+</main>
+<script>
+document.getElementById("copy").addEventListener("click",async()=>{const text=document.getElementById("plugin-url").textContent;try{await navigator.clipboard.writeText(text);document.getElementById("status").textContent="Copied. Paste it into Revenge → Plugins → Install from URL."}catch{document.getElementById("status").textContent="Copy the URL above manually, then paste it into Revenge → Plugins → Install from URL."}});
+</script>
+</body>
+</html>`;
+
 for (let plug of await readdir("./plugins")) {
     const manifest = JSON.parse(await readFile(`./plugins/${plug}/manifest.json`));
     const outPath = `./dist/${plug}/index.js`;
@@ -86,3 +123,5 @@ for (let plug of await readdir("./plugins")) {
         process.exit(1);
     }
 }
+
+await writeFile("./dist/fake-deafen/index.html", sitePage);
