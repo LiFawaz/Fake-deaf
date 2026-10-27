@@ -2,6 +2,7 @@ import { storage } from "@vendetta/plugin";
 import { Forms } from "@vendetta/ui/components";
 import { showToast } from "@vendetta/ui/toasts";
 import { useProxy } from "@vendetta/storage";
+import { setFakeDeafenEnabled } from "./index";
 
 const { FormSwitchRow, FormText } = Forms;
 
@@ -15,10 +16,10 @@ export default function Settings() {
         <>
             <FormSwitchRow
                 label="Fake Deafen Active"
-                subLabel="Toggle before/during a call. Others see you deafened/muted; your mic stays live."
+                subLabel="Enable or disable fake mute/deafen. Your real microphone and audio stay live."
                 value={storage.enabled}
                 onValueChange={(v: boolean) => {
-                    storage.enabled = v;
+                    setFakeDeafenEnabled(v);
                     showToast(v ? "Fake Deafen enabled" : "Fake Deafen disabled");
                 }}
             />
@@ -33,7 +34,7 @@ export default function Settings() {
                 onValueChange={(v: boolean) => { storage.fakeDeafen = v; }}
             />
             <FormText>
-                Flip the switch on, join or stay in a call. Flip it off to go back to normal.
+                You can toggle this here or use /fake in Discord. Changes are pushed immediately when you are connected to a voice channel.
             </FormText>
         </>
     );
