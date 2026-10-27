@@ -113,9 +113,13 @@ function force_voice_state_push() {
     logger.log(`[FakeDeafen] pushed voice state, enabled=${storage.enabled}`);
 }
 
-function toggle() {
-    storage.enabled = !storage.enabled;
+export function setFakeDeafenEnabled(enabled: boolean): void {
+    storage.enabled = enabled;
     force_voice_state_push();
+}
+
+function toggle() {
+    setFakeDeafenEnabled(!storage.enabled);
     return storage.enabled
         ? "Fake Deafen ON — you appear deafened+muted, mic still live."
         : "Fake Deafen OFF — back to normal.";
