@@ -1,36 +1,31 @@
 # Fake-deaf
 
-A Revenge plugin that makes your Discord voice status appear muted and deafened while your actual microphone and audio can remain live.
+Fake-deaf is a Revenge plugin that tries to make you appear muted and deafened to other people while your real microphone and audio stay live. It is not a website you use directly.
 
-## Install
+## Install in Revenge
 
-1. Open the [Fake-deaf install page](https://LiFawaz.github.io/Fake-deaf/fake-deafen/).
-2. Copy the plugin URL shown there.
-3. In Revenge, open **Plugins** and choose **Install from URL**.
-4. Paste the URL and install the plugin.
-5. Open the plugin settings and turn on **Fake Deafen Active**. You can also use `/fake` to toggle it.
+1. Open the plugin installer in Revenge.
+2. Choose **Install from URL**.
+3. Paste this URL:
 
-Direct manifest URL:  
-`https://raw.githubusercontent.com/LiFawaz/Fake-deaf/main/dist/fake-deafen/manifest.json`
+   `https://LiFawaz.github.io/Fake-deaf/fake-deafen/`
 
-## Important: enable it before joining voice
+4. Install and enable the plugin.
 
-Discord only sends your voice-state update when you connect to a voice channel. If you enable Fake-deaf while you are **not in a voice channel**, there is no active voice state to update yet. Join a voice channel after enabling it; the plugin will apply the fake muted/deafened flags when the voice connection is established.
+You can also open the [install page](https://LiFawaz.github.io/Fake-deaf/fake-deafen/) and copy the URL from there.
 
-If you enable it while already connected, the plugin tries to push an updated voice state immediately. If the status does not change, toggle the setting off and on once, or leave and rejoin the voice channel.
+## Use it
 
-## Settings
+**For the most reliable result, join a voice channel first, then enable Fake-deaf.** Open the plugin's **Configure** settings and turn on **Fake Deafen Active**, or use `/fake` while connected to voice.
 
-- **Fake Deafen Active** — turns the feature on or off.
-- **Broadcast as Muted** — makes your outgoing voice state report muted.
-- **Broadcast as Deafened** — makes your outgoing voice state report deafened.
+If you enable Fake-deaf before joining a voice channel, the initial setting may not be reflected in your voice state on every Discord/Revenge build. If other people still see you as deafened/muted normally after you join, toggle **Fake Deafen Active** off and back on while you are in the voice channel.
 
-The plugin changes the voice-state data sent by the client. It does not physically mute your microphone or stop your audio playback. Behavior can vary across Discord/Revenge builds, and this is not a server-side mute or deafen.
+- **Broadcast as Muted** controls the fake mute flag.
+- **Broadcast as Deafened** controls the fake deafen flag.
+- These options do not turn off your actual microphone or audio in the intended behavior.
 
-## Command
+## Important
 
-Use `/fake` in Discord to toggle Fake-deaf.
+This relies on internal Discord client gateway behavior and may stop working or behave differently after client updates. The plugin cannot guarantee that other users will see the fake state on every build.
 
-## Credits
-
-Made by Li Fawaz.
+Created by LiFawaz.
