@@ -2,7 +2,7 @@ import { storage } from "@vendetta/plugin";
 import { Forms } from "@vendetta/ui/components";
 import { showToast } from "@vendetta/ui/toasts";
 import { useProxy } from "@vendetta/storage";
-import { setFakeDeafenEnabled } from "./index";
+import { refreshFakeVoiceState, setFakeDeafenEnabled } from "./index";
 
 const { FormSwitchRow, FormText } = Forms;
 
@@ -26,12 +26,12 @@ export default function Settings() {
             <FormSwitchRow
                 label="Broadcast as Muted"
                 value={storage.fakeMute}
-                onValueChange={(v: boolean) => { storage.fakeMute = v; }}
+                onValueChange={(v: boolean) => { storage.fakeMute = v; refreshFakeVoiceState(); }}
             />
             <FormSwitchRow
                 label="Broadcast as Deafened"
                 value={storage.fakeDeafen}
-                onValueChange={(v: boolean) => { storage.fakeDeafen = v; }}
+                onValueChange={(v: boolean) => { storage.fakeDeafen = v; refreshFakeVoiceState(); }}
             />
             <FormText>
                 You can toggle this here or use /fake in Discord. Changes are pushed immediately when you are connected to a voice channel.
