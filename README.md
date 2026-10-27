@@ -1,31 +1,29 @@
 # Fake-deaf
 
-Fake-deaf is a Revenge plugin that tries to make you appear muted and deafened to other people while your real microphone and audio stay live. It is not a website you use directly.
+A Revenge plugin that lets you **broadcast yourself as muted and/or deafened when joining a voice channel**, while keeping your actual microphone and audio active locally.
 
-## Install in Revenge
+## Install
 
-1. Open the plugin installer in Revenge.
-2. Choose **Install from URL**.
-3. Paste this URL:
+Add this URL in Revenge → Plugins → Install from URL:
 
-   `https://LiFawaz.github.io/Fake-deaf/fake-deafen/`
+```
+https://LiFawaz.github.io/Fake-deaf/fake-deafen/
+```
 
-4. Install and enable the plugin.
+Plugin page: https://LiFawaz.github.io/Fake-deaf/fake-deafen/
 
-You can also open the [install page](https://LiFawaz.github.io/Fake-deaf/fake-deafen/) and copy the URL from there.
+## Use
 
-## Use it
+1. Install and enable **FakeDeafen** in Revenge.
+2. Open its settings and turn on **Fake Deafen Active**.
+3. Choose **Broadcast as Muted** and/or **Broadcast as Deafened**.
+4. You can enable it **before joining a voice channel**. When Discord sends the next voice-state update as you join, the plugin adds the selected flags to that outgoing update.
+5. You can also toggle it with `/fake`.
 
-**For the most reliable result, join a voice channel first, then enable Fake-deaf.** Open the plugin's **Configure** settings and turn on **Fake Deafen Active**, or use `/fake` while connected to voice.
+The fake flags affect what is sent in the voice-state update; they do not physically mute your microphone or stop your audio locally. Discord/server behavior can change, so verify the result in your client.
 
-If you enable Fake-deaf before joining a voice channel, the initial setting may not be reflected in your voice state on every Discord/Revenge build. If other people still see you as deafened/muted normally after you join, toggle **Fake Deafen Active** off and back on while you are in the voice channel.
+## Notes
 
-- **Broadcast as Muted** controls the fake mute flag.
-- **Broadcast as Deafened** controls the fake deafen flag.
-- These options do not turn off your actual microphone or audio in the intended behavior.
-
-## Important
-
-This relies on internal Discord client gateway behavior and may stop working or behave differently after client updates. The plugin cannot guarantee that other users will see the fake state on every build.
-
-Created by LiFawaz.
+- If you are already in a voice channel when enabling it, the plugin attempts to send an updated voice state immediately.
+- If the flags do not update, toggle Fake Deafen off and on or rejoin the channel.
+- This is a client-side behavior and is not a server-side permission bypass.
