@@ -77,7 +77,6 @@ button{margin-top:12px;width:100%;padding:13px 18px;border:0;border-radius:12px;
 <div class="url" id="plugin-url">https://LiFawaz.github.io/Fake-deaf/fake-deafen/</div>
 <button id="copy" type="button">Copy plugin URL</button>
 <p class="note" id="status">You can enable Fake-deaf before joining a voice channel. When Discord sends the voice-state update as you join, the plugin adds your selected muted/deafened flags. Your real mic and audio stay live locally. If it does not update, toggle it off and on or rejoin.</p>
-<div class="url" style="margin-top:8px">https://LiFawaz.github.io/Fake-deaf/fake-deafen/manifest.json</div>
 </main>
 <script>
 document.getElementById("copy").addEventListener("click",async()=>{const text=document.getElementById("plugin-url").textContent;try{await navigator.clipboard.writeText(text);document.getElementById("status").textContent="Copied. Paste it into Revenge → Plugins → Install from URL."}catch{document.getElementById("status").textContent="Copy the URL above manually, then paste it into Revenge → Plugins → Install from URL."}});
