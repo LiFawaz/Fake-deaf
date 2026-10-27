@@ -76,7 +76,7 @@ button{margin-top:12px;width:100%;padding:13px 18px;border:0;border-radius:12px;
 <p>Fake-deaf is a Revenge plugin, not a web app. Copy the plugin URL below and paste it into Revenge’s Plugins page using Install from URL.</p>
 <div class="url" id="plugin-url">https://LiFawaz.github.io/Fake-deaf/fake-deafen/</div>
 <button id="copy" type="button">Copy plugin URL</button>
-<p class="note" id="status">For the most reliable result, join a voice channel first, then enable Fake-deaf in Revenge. If you enabled it before joining and others still see you as deafened, toggle it off and back on after joining.</p>
+<p class="note" id="status">You can enable Fake-deaf before joining a voice channel. When Discord sends the voice-state update as you join, the plugin adds your selected muted/deafened flags. Your real mic and audio stay live locally. If it does not update, toggle it off and on or rejoin.</p>
 <div class="url" style="margin-top:8px">https://LiFawaz.github.io/Fake-deaf/fake-deafen/manifest.json</div>
 </main>
 <script>
