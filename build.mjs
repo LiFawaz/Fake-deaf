@@ -74,10 +74,10 @@ button{margin-top:12px;width:100%;padding:13px 18px;border:0;border-radius:12px;
 <div class="icon" aria-hidden="true">🎧</div>
 <h1>Put this into Revenge</h1>
 <p>Fake-deaf is a Revenge plugin, not a web app. Copy the plugin URL below and paste it into Revenge’s Plugins page using Install from URL.</p>
-<div class="url" id="plugin-url">https://raw.githubusercontent.com/LiFawaz/Fake-deaf/main/dist/fake-deafen/</div>
+<div class="url" id="plugin-url">https://LiFawaz.github.io/Fake-deaf/fake-deafen/</div>
 <button id="copy" type="button">Copy plugin URL</button>
-<p class="note" id="status">If install from URL rejects this folder URL, use the manifest URL instead.</p>
-<div class="url" style="margin-top:8px">https://raw.githubusercontent.com/LiFawaz/Fake-deaf/main/dist/fake-deafen/manifest.json</div>
+<p class="note" id="status">For the most reliable result, join a voice channel first, then enable Fake-deaf in Revenge. If you enabled it before joining and others still see you as deafened, toggle it off and back on after joining.</p>
+<div class="url" style="margin-top:8px">https://LiFawaz.github.io/Fake-deaf/fake-deafen/manifest.json</div>
 </main>
 <script>
 document.getElementById("copy").addEventListener("click",async()=>{const text=document.getElementById("plugin-url").textContent;try{await navigator.clipboard.writeText(text);document.getElementById("status").textContent="Copied. Paste it into Revenge → Plugins → Install from URL."}catch{document.getElementById("status").textContent="Copy the URL above manually, then paste it into Revenge → Plugins → Install from URL."}});
