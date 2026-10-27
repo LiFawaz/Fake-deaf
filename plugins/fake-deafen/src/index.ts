@@ -5,10 +5,7 @@ import { storage } from "@vendetta/plugin";
 import Settings from "./Settings";
 
 let original_send: any = null;
-let patched_socket: any = null;
 let unregister_command: (() => void) | null = null;
-let retryTimers: any[] = [];
-let toggleGeneration = 0;
 
 function probe(label: string, candidates: string[][]): any {
     for (const props of candidates) {
@@ -60,55 +57,22 @@ function patch_socket_send() {
         logger.log("[FakeDeafen] socket unavailable or wrong shape — patch skipped");
         return;
     }
-    if (patched_socket === socket && original_send) return;
-    unpatch_socket_send();
-    patched_socket = socket;
     original_send = socket.send;
-    const sendOriginal = original_send;
-    const wrappedSend = function (this: any, op: number, data: any, ...args: any[]) {
-        if (op === 4 && storage.enabled && data && typeof data === "object") {
-            const media = get_media_engine_store();
-            const realMute = !!(media?.isSelfMute?.() ?? media?.isMute?.() ?? media?.isLocalMute?.() ?? false);
-            const realDeaf = !!(media?.isSelfDeaf?.() ?? media?.isDeaf?.() ?? media?.isLocalDeaf?.() ?? false);
-            // Always write both flags while enabled. Leaving a stale true value
-            // untouched when an option is switched off caused rapid-toggle glitches.
-            data.self_mute = !!storage.fakeMute || realMute;
-            data.self_deaf = !!storage.fakeDeafen || realDeaf;
+    socket.send = function (op: number, data: any, ...args: any[]) {
+        if (op === 4 && storage.enabled && data) {
+            if (storage.fakeMute) data.self_mute = true;
+            if (storage.fakeDeafen) data.self_deaf = true;
         }
-        return sendOriginal.apply(this, [op, data, ...args]);
+        return original_send.apply(this, [op, data, ...args]);
     };
-    socket.send = wrappedSend;
     logger.log("[FakeDeafen] socket.send patched");
 }
 
 function unpatch_socket_send() {
-    const socket = patched_socket;
-    if (socket && original_send && socket.send !== original_send) {
-        // Restore only our own wrapper; don't overwrite a patch installed later.
-        const current = socket.send;
-        if (current && current !== original_send) {
-            socket.send = original_send;
-        }
-    }
-    patched_socket = null;
-    original_send = null;
-}
-
-function clear_retry_timers() {
-    for (const timer of retryTimers) clearTimeout(timer);
-    retryTimers = [];
-}
-
-function schedule_voice_state_refresh() {
-    const generation = ++toggleGeneration;
-    clear_retry_timers();
-    // Short, finite retries handle Discord overwriting a voice-state update
-    // during quick toggles. No continuous 10ms polling or gateway spam.
-    for (const delay of [10, 30, 80, 160]) {
-        retryTimers.push(setTimeout(() => {
-            if (generation !== toggleGeneration || !storage.enabled) return;
-            force_voice_state_push();
-        }, delay));
+    const socket = get_gateway()?.getSocket?.();
+    if (socket && original_send) {
+        socket.send = original_send;
+        original_send = null;
     }
 }
 
@@ -141,8 +105,8 @@ function force_voice_state_push() {
     socket.send(4, {
         guild_id: channel?.guild_id ?? null,
         channel_id: channelId,
-        self_mute: storage.enabled ? (!!storage.fakeMute || realMute) : realMute,
-        self_deaf: storage.enabled ? (!!storage.fakeDeafen || realDeaf) : realDeaf,
+        self_mute: (storage.enabled && storage.fakeMute) || realMute,
+        self_deaf: (storage.enabled && storage.fakeDeafen) || realDeaf,
         self_video: false,
         flags: 0,
     });
@@ -151,15 +115,7 @@ function force_voice_state_push() {
 
 export function setFakeDeafenEnabled(enabled: boolean): void {
     storage.enabled = enabled;
-    // Refresh immediately, then retry briefly to win over any in-flight
-    // Discord voice-state update. Retries always use the latest toggle state.
     force_voice_state_push();
-    schedule_voice_state_refresh();
-}
-
-export function refreshFakeVoiceState(): void {
-    force_voice_state_push();
-    if (storage.enabled) schedule_voice_state_refresh();
 }
 
 function toggle() {
@@ -196,8 +152,6 @@ export default {
         });
     },
     onUnload: () => {
-        toggleGeneration++;
-        clear_retry_timers();
         unpatch_socket_send();
         storage.enabled = false;
         unregister_command?.();
